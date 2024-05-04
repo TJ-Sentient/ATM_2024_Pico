@@ -22,7 +22,7 @@ public class TextMarker : Marker
 
     public override void DeSelectMarker()
     {
-        AnimateMarker(0.5f,0,_yPosDefault);
+        AnimateMarker(0.75f,0,_yPosDefault);
     }
 
     public override void ResetMarker()

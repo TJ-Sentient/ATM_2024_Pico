@@ -1,14 +1,17 @@
 using System.Collections.Generic;
 using DG.Tweening;
 using Sirenix.OdinInspector;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
-    [SerializeField] private MarkerBtn  _markerBtnPrefab;
-    [SerializeField] private Transform  _gridParent;
-    [SerializeField] private OSK        _osk;
-    [SerializeField] private GameObject _interactionBlocker;
+    [SerializeField] private MarkerBtn      _markerBtnPrefab;
+    [SerializeField] private Transform      _gridParent;
+    [SerializeField] private OSK            _osk;
+    [SerializeField] private GameObject     _interactionBlocker;
+    [SerializeField] private ScrollRect     _scrollView; 
 
     [Header("Animation References")]
     [SerializeField] private CanvasGroup _scrollCG;
@@ -25,6 +28,7 @@ public class UIController : MonoBehaviour
 
     private void Start()
     {
+        _osk.ClearInput();
         _osk.Hide();
         _interactionBlocker.SetActive(false);
     }
@@ -74,6 +78,13 @@ public class UIController : MonoBehaviour
         AnimateAlpha(_scrollCG,1f, _duration,_ease);
         _osk.Hide();
         _interactionBlocker.SetActive(false);
+    }
+
+    public void ClearInput()
+    {
+        _scrollView.verticalNormalizedPosition = 0;
+        _osk.ClearInput();
+        CloseOSK();
     }
 
     public static Tweener AnimateAlpha(CanvasGroup cg, float alpha, float duration, Ease ease, float delay = 0)

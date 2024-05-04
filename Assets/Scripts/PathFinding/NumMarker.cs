@@ -33,7 +33,7 @@ public class NumMarker : Marker
 
     public override void DeSelectMarker()
     {
-        AnimateMarker(0.5f,_defaultScale,_yPosDefault);
+        AnimateMarker(0.75f,_defaultScale,_yPosDefault);
     }
 
     public override void ResetMarker()

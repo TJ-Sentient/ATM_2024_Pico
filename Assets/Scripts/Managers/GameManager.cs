@@ -4,14 +4,14 @@ using BUT.Utils;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager>
 {
     public MarkerController markerController;
     public PathVisualizer   pathVisualizer;
     public UIPopup          uiPopup;
-    public OSK              osk;
-    public TMP_InputField   searchInput;
+    public UIController     uiController;
     public int              resetTime = 45;
     
     private MarkerBtn _currentPressedBtn;
@@ -59,8 +59,6 @@ public class GameManager : Singleton<GameManager>
         markerController.ResetCurrentMarker();
         pathVisualizer.ResetSpline();
         uiPopup.ResetUI();
-        // osk.Hide();
-        // searchInput.text = "";
     }
 
     private IEnumerator ResetPathOnDelay()
