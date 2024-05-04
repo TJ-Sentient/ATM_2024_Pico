@@ -82,7 +82,7 @@ public class UIController : MonoBehaviour
 
     public void ClearInput()
     {
-        _scrollView.verticalNormalizedPosition = 0;
+        _scrollView.verticalNormalizedPosition = 1;
         _osk.ClearInput();
         CloseOSK();
     }

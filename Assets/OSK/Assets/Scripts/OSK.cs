@@ -8,7 +8,6 @@ public class OSK : MonoBehaviour
     public CanvasGroup    canvasGroup;
     public TMP_InputField textField;
     public GameObject     engLower, engUpper;
-    public GameObject     clearBtn;
     
     [SerializeField] private float duration = 1f;
     [SerializeField] private Ease  ease = Ease.InSine;
@@ -16,7 +15,6 @@ public class OSK : MonoBehaviour
     public void AlphabetFunction(string alphabet)
     {
         textField.text += alphabet;
-        clearBtn.SetActive(true);
     }
 
     public void SpaceFunction()
@@ -27,13 +25,11 @@ public class OSK : MonoBehaviour
     public void BackSpace()
     {
         if(textField.text.Length>0) textField.text= textField.text.Remove(textField.text.Length-1);
-        else clearBtn.SetActive(false);
     }
 
     public void ClearInput()
     {
         textField.text = "";
-        clearBtn.SetActive(false);
     }
 
     public void Search()

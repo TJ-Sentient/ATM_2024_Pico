@@ -61,6 +61,12 @@ public class GameManager : Singleton<GameManager>
         uiPopup.ResetUI();
     }
 
+    public void ResetApp()
+    {
+        ResetPath();
+        uiController.ClearInput();
+    }
+
     private IEnumerator ResetPathOnDelay()
     {
         yield return new WaitForSeconds(resetTime);
