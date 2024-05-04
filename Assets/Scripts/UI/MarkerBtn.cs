@@ -17,12 +17,15 @@ public class MarkerBtn : MonoBehaviour
     [SerializeField] private TextMeshProUGUI       _idDisplay;
     [SerializeField] private TextMeshProUGUI       _nameDisplay;
     [SerializeField] private RectTransform         _selectionLine;
+
+    private readonly Color _white = new Color(1, 1, 1, 1);
+    private readonly Color _purple = new Color(0.3843137f, 0.1686275f, 0.3843137f, 1);
     
     public void Init(MarkerData markerData)
     {
         MarkerData = markerData;
         MarkerName = markerData.name;
-        _idDisplay.text = markerData.id.ToString();
+        _idDisplay.text = markerData.id > 0 ? markerData.id.ToString() : "";
         _nameDisplay.text = MarkerName;
         
         _button.onClick.AddListener(MarkerBtnSelected);
@@ -42,15 +45,19 @@ public class MarkerBtn : MonoBehaviour
     {
         Debug.Log($"<color=cyan> MARKER SELECTED : {MarkerData.id} </color>");
         MarkerBtnPressed?.Invoke(this);
+        // _nameDisplay.DOKill();
         _selectionLine.DOKill();
         _nameDisplay.fontWeight = FontWeight.Bold;
+        // _nameDisplay.DOColor(_purple, 0.8f);
         _selectionLine.DOSizeDelta(new Vector2(300, 2), 0.8f);
     }
 
     public void MarkerBtnUnSelected()
     {
+        // _nameDisplay.DOKill();
         _selectionLine.DOKill();
         _nameDisplay.fontWeight = FontWeight.Regular;
+        // _nameDisplay.DOColor(_white, 0.3f);
         _selectionLine.DOSizeDelta(new Vector2(0, 2), 0.3f);
     }
 }

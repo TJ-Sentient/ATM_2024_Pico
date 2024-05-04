@@ -16,6 +16,7 @@ public class UIPopup : MonoBehaviour
     private CanvasGroup   _canvasGroup;
     private RectTransform _uiElement;
     private Coroutine     _delayedShowRoutine;
+    private int           _currentMarkerID;
 
     private void Awake()
     {
@@ -26,7 +27,7 @@ public class UIPopup : MonoBehaviour
     private void Start()
     {
         UIController.AnimateAlpha(_canvasGroup, 0, 0, Ease.Linear);
-        PathVisualizer.AgentTraversing += OnAgentTraversing; 
+        PathVisualizer.AgentTraversing += OnAgentTraversing;
     }
 
     private void OnDestroy()
@@ -41,20 +42,37 @@ public class UIPopup : MonoBehaviour
         _delayedShowRoutine = StartCoroutine(ShowWithDelay(tweenDuration));
     }
 
-    public void Set(string name, Vector3 location)
+    public void Set(int id, string name, Vector3 location)
     {
         _canvasGroup.DOKill();
         UIController.AnimateAlpha(_canvasGroup, 0, 0.1f, Ease.Linear).OnComplete(() =>
         {
+            Debug.Log($"<color=cyan> POP RECEIVED ID {id} </color>");
+            _currentMarkerID = id;
+            if (id < 0) return;
             _markerName.text = name;
             transform.position = location + _worldOffset;
             StartCoroutine(CheckAndRotateUI());
         });
     }
 
+    public void ResetUI()
+    {
+        if(_delayedShowRoutine != null) StopCoroutine(_delayedShowRoutine);
+        _delayedShowRoutine = null;
+        _currentMarkerID = 0;
+        _canvasGroup.DOKill();
+        UIController.AnimateAlpha(_canvasGroup, 0, 0.1f, Ease.Linear);
+    }
+
     private IEnumerator ShowWithDelay(float tweenDuration)
     {
         yield return new WaitForSeconds(tweenDuration);
+        if (_currentMarkerID < 0)
+        {
+            _delayedShowRoutine = null;
+            yield break;
+        }
         Debug.Log($"<color=orange> SHOWING WITH DELAY </color>");
         UIController.AnimateAlpha(_canvasGroup, 1, 0.5f, Ease.Linear);
         yield return new WaitForSeconds(15);

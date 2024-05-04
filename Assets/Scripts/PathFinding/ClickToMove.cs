@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -9,7 +10,14 @@ public class ClickToMove : MonoBehaviour
     public NavMeshAgent agent; // Assign your NavMeshAgent which is attached to the AI character
     // public PathDrawer   pathDrawer;
     public PathVisualizer pathVisualizer;
-    
+
+    private void Awake()
+    {
+#if !UNITY_EDITOR
+        enabled = false;
+#endif
+    }
+
 
     void Update()
     {

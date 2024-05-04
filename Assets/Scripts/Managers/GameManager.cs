@@ -1,7 +1,8 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using BUT.Utils;
+using Sirenix.OdinInspector;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
@@ -9,6 +10,9 @@ public class GameManager : Singleton<GameManager>
     public MarkerController markerController;
     public PathVisualizer   pathVisualizer;
     public UIPopup          uiPopup;
+    public OSK              osk;
+    public TMP_InputField   searchInput;
+    public int              resetTime = 45;
     
     private MarkerBtn _currentPressedBtn;
 
@@ -37,6 +41,31 @@ public class GameManager : Singleton<GameManager>
             return;
         }
         pathVisualizer.UpdatePath(marker.transform.position);
-        uiPopup.Set(btn.MarkerName,marker.transform.position);
+        uiPopup.Set(btn.MarkerData.id, btn.MarkerName,marker.transform.position);
+        StartResetTimer();
+    }
+
+    private void StartResetTimer()
+    {
+        StopAllCoroutines();
+        StartCoroutine(ResetPathOnDelay());
+    }
+
+    [Button]
+    private void ResetPath()
+    {
+        if(_currentPressedBtn != null ) _currentPressedBtn.MarkerBtnUnSelected();
+        _currentPressedBtn = null;
+        markerController.ResetCurrentMarker();
+        pathVisualizer.ResetSpline();
+        uiPopup.ResetUI();
+        // osk.Hide();
+        // searchInput.text = "";
+    }
+
+    private IEnumerator ResetPathOnDelay()
+    {
+        yield return new WaitForSeconds(resetTime);
+        ResetPath();
     }
 }

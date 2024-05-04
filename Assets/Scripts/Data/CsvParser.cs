@@ -9,6 +9,7 @@ public class CsvParser : SerializedMonoBehaviour
 {
     public static event Action<List<MarkerData>> MarkerDataLoaded;
     
+    public List<int> listTopperIDs = new List<int>();
     [ReadOnly][SerializeField] private List<MarkerData> _markersData;
 
     private void Start()
@@ -39,9 +40,32 @@ public class CsvParser : SerializedMonoBehaviour
             _markersData.Add(markerData);
         }
         
-        _markersData = _markersData.OrderBy(m => m.name).ToList();
+        ProcessData();
         
         MarkerDataLoaded?.Invoke(_markersData);
+    }
+
+    private void ProcessData()
+    {
+        List<MarkerData> _removedMarkers = new List<MarkerData>();
+        
+        // Check and remove markers that should be at the top
+        for (int i = _markersData.Count - 1; i >= 0; i--)
+        {
+            if (listTopperIDs.Contains(_markersData[i].id))
+            {
+                _removedMarkers.Add(_markersData[i]);
+                _markersData.RemoveAt(i);
+            }
+        }
+
+        // _markersData = _markersData.OrderBy(m => m.name).ToList();
+        _markersData.Sort((x, y) => String.Compare(x.name, y.name, StringComparison.Ordinal));
+        
+        
+        // Insert the removed markers at the beginning of the list
+        _removedMarkers.Reverse();
+        _markersData.InsertRange(0, _removedMarkers);
     }
     
     

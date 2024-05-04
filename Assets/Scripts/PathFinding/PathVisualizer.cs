@@ -108,5 +108,12 @@ public class PathVisualizer : MonoBehaviour
         canAnimatePath = true;
         AgentTraversing?.Invoke(duration);
     }
+
+    public void ResetSpline()
+    {
+        splineRenderer.clipTo = 0;
+        SplinePoint[] points = Array.Empty<SplinePoint>();
+        splineComputer.SetPoints(points, SplineComputer.Space.World);
+    }
         
 }

@@ -14,6 +14,7 @@ public class MarkerController : SerializedMonoBehaviour
     
     private void Start()
     {
+        transform.position = new Vector3(0, 0.5f, 0);
         _markersDict = new Dictionary<int, Marker>();
         
         // Get all children
@@ -23,9 +24,10 @@ public class MarkerController : SerializedMonoBehaviour
             Marker marker = child.gameObject.GetComponent<Marker>();
             if (marker == null) // Check if the child does not already have a Marker component
             {
-                marker = child.gameObject.AddComponent<Marker>();
-                marker.Init(this);
+                Debug.Log($"<color=orange> ADDING MARKER SCRIPT : {child.name} </color>");
+                marker = child.gameObject.AddComponent<NumMarker>();
             }
+            marker.Init(this);
         }
     }
 
@@ -51,8 +53,11 @@ public class MarkerController : SerializedMonoBehaviour
         return _markersDict[id];
     }
 
-    private void ResetCurrentMarker()
+    public void ResetCurrentMarker()
     {
-        if(_currentMarker!= null) _currentMarker.ResetMarker();
+        foreach (var marker in _markersDict)
+        {
+            marker.Value.ResetMarker();
+        }
     }
 }
